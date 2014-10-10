@@ -155,7 +155,8 @@ void Talk2WatchInterface::forwardSourceCode()
 // Transmission
 void Talk2WatchInterface::sendCommand(QString _command)
 {
-		m_udp->sendMessage("127.0.0.1", 9877, _command);
+    m_udp->sendMessage("127.0.0.1", 8989, _command); // T2W free
+    m_udp->sendMessage("127.0.0.1", 9877, _command); // T2W Pro
 }
 
 void Talk2WatchInterface::sendCommandViaInvocation(QString _command, QString _target)
