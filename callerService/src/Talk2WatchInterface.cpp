@@ -20,6 +20,7 @@
 
 Talk2WatchInterface::Talk2WatchInterface(QObject *_parent)
 {
+    Q_UNUSED(_parent);
 
 	m_udp = new UdpModule(this);
 	m_udp->listenOnPort(8484);

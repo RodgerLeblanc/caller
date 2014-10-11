@@ -9,7 +9,9 @@
 
 UdpModule::UdpModule(QObject *_parent)
 {
-	m_server = new QUdpSocket(this);
+    Q_UNUSED(_parent);
+
+    m_server = new QUdpSocket(this);
 	m_socket = new QUdpSocket(this);
 }
 

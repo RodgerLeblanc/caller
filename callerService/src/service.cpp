@@ -27,7 +27,6 @@
 #include <bb/pim/contacts/Contact>
 
 using namespace bb::pim::contacts;
-using namespace bb::platform;
 using namespace bb::system;
 
 Service::Service() :
