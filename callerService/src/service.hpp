@@ -32,7 +32,6 @@ namespace bb {
 }
 
 class Talk2WatchInterface;
-class UdpModule;
 class Settings;
 
 class Service: public QObject
@@ -44,18 +43,13 @@ public:
 private slots:
     void handleInvoke(const bb::system::InvokeRequest &);
     void onCallUpdated(const bb::system::phone::Call call);
-    void onTransmissionReady();
-    void onUdpDataReceived(QString _data);
 
 private:
-    void authorizeAppWithT2w();
-
     bb::platform::Notification * m_notify;
     bb::system::InvokeManager * m_invokeManager;
     Settings* settings;
 
     Talk2WatchInterface* t2w;
-    UdpModule *udp;
 
     bb::system::phone::Phone* phone;
 };

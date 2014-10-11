@@ -5,4 +5,4 @@ CONFIG += qt warn_on
 include(config.pri)
 
 QT += network
-LIBS += -lbb -lbbsystem -lbbplatform -lbbdata
+LIBS += -lbb -lbbsystem -lbbplatform -lbbdata -lbbpim

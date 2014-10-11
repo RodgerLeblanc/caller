@@ -17,7 +17,6 @@
 #include "service.hpp"
 #include "Settings.h"
 #include "Talk2WatchInterface.h"
-#include "UdpModule.h"
 
 #include <bb/Application>
 #include <bb/ApplicationInfo>
@@ -25,7 +24,11 @@
 #include <bb/platform/NotificationDefaultApplicationSettings>
 #include <bb/system/InvokeManager>
 #include <bb/system/phone/Call>
+#include <bb/pim/contacts/ContactService>
+#include <bb/pim/contacts/ContactSearchFilters>
+#include <bb/pim/contacts/Contact>
 
+using namespace bb::pim::contacts;
 using namespace bb::platform;
 using namespace bb::system;
 
@@ -34,6 +37,7 @@ Service::Service() :
         m_notify(new Notification(this)),
         m_invokeManager(new InvokeManager(this)),
         settings(new Settings(this)),
+        t2w(new Talk2WatchInterface(this)),
         phone(new bb::system::phone::Phone(this))
 {
     m_invokeManager->connect(m_invokeManager, SIGNAL(invoked(const bb::system::InvokeRequest&)),
@@ -42,14 +46,6 @@ Service::Service() :
     NotificationDefaultApplicationSettings settings;
     settings.setPreview(NotificationPriorityPolicy::Allow);
     settings.apply();
-
-    // Connect t2w and udp objects
-    t2w = new Talk2WatchInterface(this);
-    connect(t2w, SIGNAL(transmissionReady()), this, SLOT(onTransmissionReady()));
-
-    udp = new UdpModule;
-    udp->listenOnPort(9821);
-    connect(udp, SIGNAL(reveivedData(QString)), this, SLOT(onUdpDataReceived(QString)));
 
     connect(phone, SIGNAL(callUpdated(const bb::system::phone::Call)), this, SLOT(onCallUpdated(const bb::system::phone::Call)));
 }
@@ -62,39 +58,14 @@ void Service::handleInvoke(const bb::system::InvokeRequest & request)
 }
 
 void Service::onCallUpdated(const bb::system::phone::Call call) {
-    qDebug() << "CallerID :" << call.phoneNumber();
-    qDebug() << "CallID :" << call.callId();
-    qDebug() << "CallType :" << call.callType();
-    if (call.callType() == bb::system::phone::CallType::Incoming && settings->value("send", false).toBool())
-        t2w->sendSms("Incoming call", call.phoneNumber());
-}
-
-void Service::onTransmissionReady()
-{
-    authorizeAppWithT2w();
-}
-
-void Service::authorizeAppWithT2w()
-{
-    bb::ApplicationInfo appInfo;
-    QString appName = "Caller";
-    QString version = appInfo.version();
-    QString UUID = "614bf149-5f54-4c51-8df0-4ec1ef94dedd";
-    QString t2wAuthUdpPort = "9821";
-    QString description = "CallerId";
-    t2w->setAppValues(appName, version, UUID, "UDP", t2wAuthUdpPort, description);
-    t2w->sendAppAuthorizationRequest();
-}
-
-void Service::onUdpDataReceived(QString _data)
-{
-    qDebug() << "onUdpDataReceived in..." << _data;
-    if(_data=="AUTH_SUCCESS") {
-        qDebug() << "Auth_Success!!!";
+    if (call.phoneNumber().isEmpty())
         return;
-    }
-    if (_data=="CREATE_ACTION_SUCCESS") {
-        qDebug() << "Create_Action_success";
-        t2w->sendSms("Script created successfully", "Your script was created successfully, you can now restart ScriptMode (choose \"[Back]\" repeatedly) to access it.");
-    }
+
+    ContactSearchFilters filters;
+    filters.setSearchValue(call.phoneNumber());
+    QList<Contact> contacts = ContactService().searchContacts(filters);
+
+    QString title = contacts.isEmpty() ? "Incoming call" : "Incoming call " + contacts[0].displayName();
+    if (call.callType() == bb::system::phone::CallType::Incoming && settings->value("send", false).toBool())
+        t2w->sendSms(title, call.phoneNumber());
 }

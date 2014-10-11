@@ -22,7 +22,7 @@ static const uint qt_meta_data_Service[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,8 +32,6 @@ static const uint qt_meta_data_Service[] = {
  // slots: signature, parameters, type, tag, flags
        9,    8,    8,    8, 0x08,
       54,   49,    8,    8, 0x08,
-      93,    8,    8,    8, 0x08,
-     121,  115,    8,    8, 0x08,
 
        0        // eod
 };
@@ -41,8 +39,6 @@ static const uint qt_meta_data_Service[] = {
 static const char qt_meta_stringdata_Service[] = {
     "Service\0\0handleInvoke(bb::system::InvokeRequest)\0"
     "call\0onCallUpdated(bb::system::phone::Call)\0"
-    "onTransmissionReady()\0_data\0"
-    "onUdpDataReceived(QString)\0"
 };
 
 void Service::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -53,8 +49,6 @@ void Service::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         switch (_id) {
         case 0: _t->handleInvoke((*reinterpret_cast< const bb::system::InvokeRequest(*)>(_a[1]))); break;
         case 1: _t->onCallUpdated((*reinterpret_cast< const bb::system::phone::Call(*)>(_a[1]))); break;
-        case 2: _t->onTransmissionReady(); break;
-        case 3: _t->onUdpDataReceived((*reinterpret_cast< QString(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -92,9 +86,9 @@ int Service::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 2)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 2;
     }
     return _id;
 }
