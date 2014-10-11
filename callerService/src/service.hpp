@@ -22,9 +22,6 @@
 
 namespace bb {
     class Application;
-    namespace platform {
-        class Notification;
-    }
     namespace system {
         class InvokeManager;
         class InvokeRequest;
@@ -45,7 +42,6 @@ private slots:
     void onCallUpdated(const bb::system::phone::Call call);
 
 private:
-    bb::platform::Notification * m_notify;
     bb::system::InvokeManager * m_invokeManager;
     Settings* settings;
 

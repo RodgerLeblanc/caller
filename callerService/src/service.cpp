@@ -20,8 +20,6 @@
 
 #include <bb/Application>
 #include <bb/ApplicationInfo>
-#include <bb/platform/Notification>
-#include <bb/platform/NotificationDefaultApplicationSettings>
 #include <bb/system/InvokeManager>
 #include <bb/system/phone/Call>
 #include <bb/pim/contacts/ContactService>
@@ -34,7 +32,6 @@ using namespace bb::system;
 
 Service::Service() :
         QObject(),
-        m_notify(new Notification(this)),
         m_invokeManager(new InvokeManager(this)),
         settings(new Settings(this)),
         t2w(new Talk2WatchInterface(this)),
@@ -42,10 +39,6 @@ Service::Service() :
 {
     m_invokeManager->connect(m_invokeManager, SIGNAL(invoked(const bb::system::InvokeRequest&)),
             this, SLOT(handleInvoke(const bb::system::InvokeRequest&)));
-
-    NotificationDefaultApplicationSettings settings;
-    settings.setPreview(NotificationPriorityPolicy::Allow);
-    settings.apply();
 
     connect(phone, SIGNAL(callUpdated(const bb::system::phone::Call)), this, SLOT(onCallUpdated(const bb::system::phone::Call)));
 }
