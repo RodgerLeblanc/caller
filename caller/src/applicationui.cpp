@@ -33,6 +33,8 @@ ApplicationUI::ApplicationUI() :
         m_invokeManager(new InvokeManager(this)),
         settings(new Settings(this))
 {
+    connect(settings, SIGNAL(settingsHaveChanged(const QString&, const QVariant&)), this, SLOT(onSettingsHaveChanged(const QString&, const QVariant&)));
+
     // prepare the localization
     if (!QObject::connect(m_localeHandler, SIGNAL(systemLanguageChanged()),
             this, SLOT(onSystemLanguageChanged()))) {
@@ -58,10 +60,17 @@ ApplicationUI::ApplicationUI() :
     // Set created root object as the application scene
     Application::instance()->setScene(root);
 
-    InvokeRequest request;
-    request.setTarget("com.RogerLeblanc.callerService");
-    request.setAction("com.RogerLeblanc.callerService.START");
-    m_invokeManager->invoke(request);
+    if (settings->value("send", false).toBool()) {
+        InvokeRequest request;
+        request.setTarget("com.RogerLeblanc.callerService");
+        request.setAction("com.RogerLeblanc.callerService.START");
+        m_invokeManager->invoke(request);
+    }
+}
+
+ApplicationUI::~ApplicationUI()
+{
+    // App stopped
 }
 
 void ApplicationUI::onSystemLanguageChanged()
@@ -75,12 +84,30 @@ void ApplicationUI::onSystemLanguageChanged()
     }
 }
 
-void ApplicationUI::shutDown()
+void ApplicationUI::onSettingsHaveChanged(const QString &key, const QVariant &value)
+{
+    if (key == "send") {
+        if (value.toBool()) {
+            startHeadless();
+        }
+        else {
+            shutDownHeadless();
+        }
+    }
+}
+
+void ApplicationUI::startHeadless()
+{
+    InvokeRequest request;
+    request.setTarget("com.RogerLeblanc.callerService");
+    request.setAction("com.RogerLeblanc.callerService.START");
+    m_invokeManager->invoke(request);
+}
+
+void ApplicationUI::shutDownHeadless()
 {
     InvokeRequest request;
     request.setTarget("com.RogerLeblanc.callerService");
     request.setAction("com.RogerLeblanc.callerService.SHUTDOWN");
     m_invokeManager->invoke(request);
-
-    Application::instance()->quit();
 }

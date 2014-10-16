@@ -42,6 +42,9 @@ private:
 
     bb::data::JsonDataAccess jda;
     QVariantMap settings;
+
+signals:
+    void settingsHaveChanged(const QString&, const QVariant&);
 };
 
 #endif /* SETTINGS_H_ */

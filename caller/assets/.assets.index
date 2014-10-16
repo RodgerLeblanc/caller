@@ -1,3 +1,14 @@
 1
-1
+12
+AboutSheet.qml
+images/icon_110_110.png
+images/icon_144_144.png
+images/icon_86_86.png
+images/icon_90_90.png
+images/icon_96_96.png
+images/ic_info.png
+images/ic_share.png
+KeyboardListener.qml
 main.qml
+SettingsSheet.qml
+ThemeContainer.qml

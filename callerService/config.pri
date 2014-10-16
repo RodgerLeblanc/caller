@@ -39,6 +39,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/Settings.cpp) \
         $$quote($$BASEDIR/src/Talk2WatchInterface.cpp) \
         $$quote($$BASEDIR/src/UdpModule.cpp) \
+        $$quote($$BASEDIR/src/UpFront.cpp) \
         $$quote($$BASEDIR/src/main.cpp) \
         $$quote($$BASEDIR/src/service.cpp)
 
@@ -46,6 +47,7 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/Settings.h) \
         $$quote($$BASEDIR/src/Talk2WatchInterface.h) \
         $$quote($$BASEDIR/src/UdpModule.h) \
+        $$quote($$BASEDIR/src/UpFront.h) \
         $$quote($$BASEDIR/src/service.hpp)
 }
 

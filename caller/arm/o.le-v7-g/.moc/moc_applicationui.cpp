@@ -31,16 +31,14 @@ static const uint qt_meta_data_ApplicationUI[] = {
 
  // slots: signature, parameters, type, tag, flags
       15,   14,   14,   14, 0x08,
-
- // methods: signature, parameters, type, tag, flags
-      41,   14,   14,   14, 0x02,
+      51,   41,   14,   14, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_ApplicationUI[] = {
     "ApplicationUI\0\0onSystemLanguageChanged()\0"
-    "shutDown()\0"
+    "key,value\0onSettingsHaveChanged(QString,QVariant)\0"
 };
 
 void ApplicationUI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -50,11 +48,10 @@ void ApplicationUI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         ApplicationUI *_t = static_cast<ApplicationUI *>(_o);
         switch (_id) {
         case 0: _t->onSystemLanguageChanged(); break;
-        case 1: _t->shutDown(); break;
+        case 1: _t->onSettingsHaveChanged((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QVariant(*)>(_a[2]))); break;
         default: ;
         }
     }
-    Q_UNUSED(_a);
 }
 
 const QMetaObjectExtraData ApplicationUI::staticMetaObjectExtraData = {

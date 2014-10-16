@@ -30,7 +30,7 @@
     <!-- The name that is displayed in the BlackBerry 10 application installer.
         May have multiple values for each language. See samples or xsd schema file.
         Optional. -->
-    <name>caller</name>
+    <name>CallerPebble</name>
 
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents
         application version which can be used to check for application upgrade. Values
@@ -38,11 +38,17 @@
         An updated version of application must have a versionNumber value higher
         than the previous version. Required. -->
     <versionNumber>1.0.0</versionNumber>
-    <platformVersion>10.2.0</platformVersion>
+    <icon>
+       <image>icon_144_144.png</image>
+       <image>icon_110_110.png</image>
+       <image>icon_96_96.png</image>
+       <image>icon_90_90.png</image>
+       <image>icon_86_86.png</image>
+    </icon>
 
     <!-- Fourth digit segment of the package version. First three segments are
         taken from the <versionNumber> element. Must be an integer from 0 to 2^16-1 -->
-    <buildId>3</buildId>
+    <buildId>4</buildId>
 
     <!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents
         the version of the application, as it should be shown to users. Optional. -->
@@ -51,7 +57,7 @@
     <!-- Description, displayed in the BlackBerry 10 application installer.
         May have multiple values for each language. See samples or xsd schema file.
         Optional. -->
-    <description>The caller application</description>
+    <description>The CallerPebble application</description>
 
     <!-- Copyright information. Optional. -->
     <!-- <copyright></copyright> -->
@@ -104,11 +110,11 @@
     </configuration>
 
     <entryPoint id="caller">
-        <name>caller</name>
+        <name>CallerPebble</name>
     </entryPoint>
 
     <entryPoint id="callerService">
-        <name>caller Service</name>
+        <name>CallerPebble Service</name>
         <entryPointType>Qnx/Elf</entryPointType>
         <!-- Request permission to run a backend headless process. -->
         <permission system="true">_sys_run_headless</permission>
@@ -117,7 +123,7 @@
 
     <invoke-target id="com.RogerLeblanc.callerService">
         <invoke-target-type>application.headless</invoke-target-type>
-        <invoke-target-name>caller Service</invoke-target-name>
+        <invoke-target-name>CallerPebble Service</invoke-target-name>
         <entry-point-id>callerService</entry-point-id>
         <filter>
             <action>bb.action.system.STARTED</action>
@@ -135,7 +141,7 @@
         <invoke-target-type>application</invoke-target-type>
         <invoke-target-name>caller</invoke-target-name>
         <icon>
-            <image>icon.png</image>
+            <image>icon_144_144.png</image>
         </icon>
         <entry-point-id>caller</entry-point-id>
     </invoke-target>
@@ -150,17 +156,18 @@
     </initialWindow>
 
     <!-- The icon for the application, which should be 114x114. -->
-    <icon>
-        <image>icon.png</image>
-    </icon>
 
-    <asset path="icon.png">icon.png</asset>
     <asset path="assets">assets</asset>
 
     <!-- Locale support -->
     <asset path="translations" dest="qm">
         <include name="*.qm" />
     </asset>
+    <asset path="assets/images/icon_144_144.png">icon_144_144.png</asset>
+    <asset path="assets/images/icon_110_110.png">icon_110_110.png</asset>
+    <asset path="assets/images/icon_96_96.png">icon_96_96.png</asset>
+    <asset path="assets/images/icon_90_90.png">icon_90_90.png</asset>
+    <asset path="assets/images/icon_86_86.png">icon_86_86.png</asset>
 
     <!-- Request permission to post notification. -->
     <permission>post_notification</permission>

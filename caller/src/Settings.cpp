@@ -125,6 +125,8 @@ void Settings::setValue(const QString &key, const QVariant &value)
 
     settings.insert(key, value);
     save();
+
+    emit settingsHaveChanged(key, value);
 }
 
 void Settings::sync()

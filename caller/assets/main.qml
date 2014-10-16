@@ -15,8 +15,18 @@
  */
 
 import bb.cascades 1.3
+import bb.system 1.2
+import bb.device 1.3
 
 Page {
+    property bool sendPhoneNumberToPebble: _settings.value("send", false)
+    property string isPassport: thisDevice.modelName == "Passport"
+    
+    onCreationCompleted: {
+        if (isPassport)
+            systemToast.show()
+    }
+    
     Container {
         layout: DockLayout {}
         horizontalAlignment: HorizontalAlignment.Fill
@@ -32,18 +42,75 @@ Page {
                     text: "Send phone number to Pebble"
                 }
                 ToggleButton {
-                    checked: _settings.value("send", false)
+                    id: toggleButton
+                    checked: sendPhoneNumberToPebble
                     onCheckedChanged: {
                         _settings.setValue("send", checked)
                     }
                 }
             }
-            Button {
-                text: "Shutdown headless"
-                onClicked: {
-                    _app.shutDown()
-                }
-            }
+        }
+        KeyboardListener {
+            haveFocus: true
+            onSwipeLeft: toggleButton.setChecked(false)
+            onSwipeRight: toggleButton.setChecked(true)
         }
     }
+
+    Menu.definition: MenuDefinition {
+        settingsAction: [
+            SettingsActionItem {
+                ActionBar.placement: ActionBarPlacement.OnBar
+                onTriggered: {
+                    settingsSheet.open()
+                }
+            }
+        ]
+        
+        actions: [
+            ActionItem {
+                title: qsTr("About")
+                ActionBar.placement: ActionBarPlacement.OnBar
+                imageSource: "asset:///images/ic_info.png"
+                onTriggered: {
+                    aboutSheet.open()
+                }
+            },
+            ActionItem {
+                title: qsTr("More apps")
+                ActionBar.placement: ActionBarPlacement.OnBar
+                imageSource: "asset:///images/ic_share.png"
+                onTriggered: {
+                    invoke.trigger("bb.action.OPEN");
+                }
+            }
+]      
+    } // end of MenuDefinition
+    
+    attachedObjects: [
+        AboutSheet {
+            id: aboutSheet
+        },
+        SettingsSheet {
+            id: settingsSheet
+        },
+        ComponentDefinition {
+            id: menu
+        },
+        Invocation {
+            id: invoke
+            query {
+                invokeTargetId: "sys.appworld"
+                uri: "appworld://vendor/70290"
+            }
+        },
+        SystemToast {
+            id: systemToast
+            body: "This toggle can be controlled with your touch enabled keyboard!"
+            position: SystemUiPosition.TopCenter
+        },
+        HardwareInfo {
+            id: thisDevice
+        }
+    ]
 }

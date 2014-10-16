@@ -41,13 +41,16 @@ class ApplicationUI: public QObject
     Q_OBJECT
 public:
     ApplicationUI();
-    virtual ~ApplicationUI() { }
-
-    Q_INVOKABLE void shutDown();
+    virtual ~ApplicationUI();
 
 private slots:
     void onSystemLanguageChanged();
+    void onSettingsHaveChanged(const QString &key, const QVariant &value);
+
 private:
+    void startHeadless();
+    void shutDownHeadless();
+
     QTranslator* m_translator;
     bb::cascades::LocaleHandler* m_localeHandler;
     bb::system::InvokeManager* m_invokeManager;

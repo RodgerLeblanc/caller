@@ -30,22 +30,27 @@ namespace bb {
 
 class Talk2WatchInterface;
 class Settings;
+class UpFront;
 
 class Service: public QObject
 {
     Q_OBJECT
 public:
     Service();
-    virtual ~Service() {}
+    virtual ~Service();
+
 private slots:
     void handleInvoke(const bb::system::InvokeRequest &);
     void onCallUpdated(const bb::system::phone::Call call);
 
 private:
+    void sendToUpFront(QString & message);
+
     bb::system::InvokeManager * m_invokeManager;
     Settings* settings;
 
     Talk2WatchInterface* t2w;
+    UpFront* upFront;
 
     bb::system::phone::Phone* phone;
 };
