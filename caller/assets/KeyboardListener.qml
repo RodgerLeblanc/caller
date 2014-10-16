@@ -4,10 +4,10 @@ Container {
     property bool haveFocus: false
     property int horizontalMinimalSwipeInDU: 36
     property int verticalMinimalSwipeInDU: 10
-    signal swipeUp
-    signal swipeDown
-    signal swipeRight
-    signal swipeLeft
+    signal swipeUp(int distanceInUI)
+    signal swipeDown(int distanceInUI)
+    signal swipeRight(int distanceInUI)
+    signal swipeLeft(int distanceInUI)
     ScrollView {                
         id: mainScrollView
         scrollRole: haveFocus ? ScrollRole.Main : ScrollRole.None
@@ -16,8 +16,6 @@ Container {
         property int stopX
         property int startY
         property int stopY
-        property int minimumDistanceX: ui.du(horizontalMinimalSwipeInDU)
-        property int minimumDistanceY: ui.du(verticalMinimalSwipeInDU)
         eventHandlers: [
             TouchKeyboardHandler {
                 id: touchKeyboard
@@ -31,32 +29,32 @@ Container {
                         mainScrollView.stopX = event.screenX
                         mainScrollView.stopY = event.screenY
 
-                        var distanceX = mainScrollView.stopX - mainScrollView.startX
-                        var distanceY = mainScrollView.stopY - mainScrollView.startY
+                        var distanceX = (mainScrollView.stopX - mainScrollView.startX) / ui.du(1)
+                        var distanceY = (mainScrollView.stopY - mainScrollView.startY) / ui.du(1)
                         
-                        if (distanceX > mainScrollView.minimumDistanceX) {
+                        if (distanceX > horizontalMinimalSwipeInDU) {
                             console.log("Swiped right " + distanceX)
                             // Emit swipeRight signal
-                            swipeRight()
+                            swipeRight(distanceX)
                         } else {
-                            if (distanceX < (0 - mainScrollView.minimumDistanceX)) {
+                            if (distanceX < (0 - horizontalMinimalSwipeInDU)) {
                                 console.log("Swiped left " + distanceX)
                                 // Emit swipeLeft signal
-                                swipeLeft()
+                                swipeLeft(distanceX)
                             } else {
                                 console.log("Distance too short for horizontal swipe... " + distanceX)
                             }
                         }
                         
-                        if (distanceY > mainScrollView.minimumDistanceY) {
+                        if (distanceY > verticalMinimalSwipeInDU) {
                             console.log("Swiped down " + distanceY)
                             // Emit swipeDown signal
-                            swipeDown()
+                            swipeDown(distanceY)
                         } else {
-                            if (distanceY < (0 - mainScrollView.minimumDistanceY)) {
+                            if (distanceY < (0 - verticalMinimalSwipeInDU)) {
                                 console.log("Swiped up " + distanceY)
                                 // Emit swipeUp signal
-                                swipeUp()
+                                swipeUp(distanceY)
                             } else {
                                 console.log("Distance too short for vertical swipe... " + distanceY)
                             }
